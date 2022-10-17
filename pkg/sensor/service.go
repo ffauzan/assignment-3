@@ -8,7 +8,6 @@ import (
 
 type SensorData struct {
 	Status Status `json:"status"`
-	// Condition string
 }
 
 type Status struct {
@@ -17,10 +16,8 @@ type Status struct {
 }
 
 type Service interface {
-	// GetStatus() (Status, error)
 	RandomizeStatus()
 	StartAutoRandomize()
-	// DecideCondition() string
 }
 
 type Repository interface {
