@@ -2,5 +2,6 @@
 
 ## How to run
 ```
-go run ./cmd/app/main.go
+1. go run ./cmd/app/main.go
+2. open localhost:8080 from your browser
 ```
