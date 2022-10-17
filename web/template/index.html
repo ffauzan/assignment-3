@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div class="bg-gray-900">
+    <div class="flex min-h-screen flex-col">
+        <h2 class="mt-2 text-center text-2xl font-semibold text-slate-100 px-1 py-2">
+            FGA GO Assignment 3: Auto Reload Data
+        </h2>
+
+        <div class="flex flex-col flex-1 items-center justify-center px-4 sm:px-0">
+            <div class="w-full max-w-sm p-6 m-4 bg-white rounded-lg shadow-md">
+                <div class="flex flex-col">
+                    <div class="text-xl font-bold text-blue-700">Water Level</div>
+                    <div class="flex space-x-2 pt-0 p-3 justify-center bg-blue-200 rounded-lg m-1 text-blue-900">
+                        <div class="text-8xl font-semibold" id="water-level-value">0</div>
+                        <div class="flex flex-col justify-end">
+                            <div class="text-xl font-semibold">meter </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 p-2 bg-blue-300 justify-center rounded-lg m-1">
+                        <div class="text-blue-900 text-3xl font-bold" id="water-level-text">AMAN</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full max-w-sm p-6 m-4 bg-white rounded-lg shadow-md">
+                <div class="flex flex-col">
+                    <div class="text-xl font-bold text-green-700">Wind Speed</div>
+                    <div class="flex space-x-2 pt-0 p-3 justify-center bg-green-200 rounded-lg m-1 text-green-900">
+                        <div class="text-8xl font-semibold" id="wind-speed-value">0</div>
+                        <div class="flex flex-col justify-end">
+                            <div class="text-xl font-semibold">meter/detik </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 p-2 bg-green-300 justify-center rounded-lg m-1">
+                        <div class="text-green-900 text-3xl font-bold" id="wind-speed-text">AMAN</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-gray-100">
+                Data will be refreshed in <span id="refresh-countdown">0</span> seconds
+            </div>
+        </div>
+                
+    </div>
+  </div>
+</body>
+
+<script>
+    // Get the water level & wind speed value from the server
+    function getStatus() {
+        console.log("Getting status...");
+        fetch('/status.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('water-level-value').innerHTML = data.status.water;
+                document.getElementById('water-level-text').innerHTML = getWaterLevelText(data.status.water);
+                
+                document.getElementById('wind-speed-value').innerHTML = data.status.wind;
+                document.getElementById('wind-speed-text').innerHTML = getWindSpeedText(data.status.wind);
+            });
+    }
+
+    // Call on first load
+    getStatus()
+
+    // Call every 15 seconds
+    var refreshInterval = 15;
+    setInterval(getStatus, refreshInterval*1000);
+
+    // Translate water level value to status text
+    function getWaterLevelText(waterLevel) {
+        if (waterLevel < 5) {
+            return "AMAN";
+        } else if (waterLevel <= 8) {
+            return "SIAGA";
+        } else {
+            return "BAHAYA";
+        }
+    }
+
+    // Translate wind speed value to status text
+    function getWindSpeedText(windSpeed) {
+        if (windSpeed < 6) {
+            return "AMAN";
+        } else if (windSpeed <= 15) {
+            return "SIAGA";
+        } else {
+            return "BAHAYA";
+        }
+    }
+
+    // Refresh countdown
+    var refreshCountdown = refreshInterval;
+    setInterval(function() {
+        refreshCountdown--;
+        document.getElementById('refresh-countdown').innerHTML = refreshCountdown;
+        if (refreshCountdown == 0) {
+            refreshCountdown = refreshInterval;
+        }
+    }, 1000);
+
+</script>
+</html>
