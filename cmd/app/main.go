@@ -15,7 +15,7 @@ func main() {
 
 	// Create a new http handler
 	handler := httpHandler.NewHandler()
-	if err := http.ListenAndServe(":8080", handler); err != nil {
+	if err := http.ListenAndServe(":5011", handler); err != nil {
 		log.Fatal(err)
 	}
 }
