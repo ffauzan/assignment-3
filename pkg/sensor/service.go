@@ -65,17 +65,3 @@ func (s *service) StartAutoRandomize() {
 	}
 
 }
-
-// func (s *service) DecideCondition() string {
-// 	data, err := s.repo.GetStatus()
-// 	if err != nil {
-// 		return ""
-// 	}
-// 	if data.Status.Water > 50 {
-// 		return "Water"
-// 	}
-// 	if data.Status.Wind > 50 {
-// 		return "Wind"
-// 	}
-// 	return "Normal"
-// }
